@@ -1,8 +1,7 @@
 FROM node:18-alpine
 
-RUN mkdir -p /sv
-WORKDIR /sv
+WORKDIR /usr/src/app
 COPY package*.json ./ 
 RUN npm install
 COPY . .
-CMD ["node","server.js"]
+CMD ["npm","run","start"]
