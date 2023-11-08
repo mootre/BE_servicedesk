@@ -1,8 +1,9 @@
-FROM node:18
+FROM node:18-alpine
 
-WORKDIR /routes
-COPY package*.json server.js ./ 
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+COPY package*.json ./ 
+RUN npm ci
 RUN npm install
 COPY . .
-EXPOSE 4000
 CMD npm start
