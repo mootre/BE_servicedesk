@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /server
 COPY package*.json ./ 
 RUN npm install
-COPY . .
+COPY . /server
 CMD ["npm","run","start"]

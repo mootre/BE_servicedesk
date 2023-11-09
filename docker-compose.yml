@@ -1,8 +1,16 @@
 version: '3.9'
 services:
-  backsvd:
-    build: .
+  web:
+    container_name: besvd_container
+    restatrt: always
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '4000:4000'
     environment:
-      - PORT=3000
+      - SQL_USER: ${SQL_USER}
+      - SQL_PASSWORD: ${SQL_PASSWORD}
+      - SQL_DATABASE: ${SQL_DATABASE}
+      - SQL_SERVER: ${SQL_SERVER}
+      - SQL_ENCRYPT: ${SQL_ENCRYPT}
