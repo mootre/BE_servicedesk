@@ -4,6 +4,7 @@ const userControl = require("../controllers/controller_user");
 const catControl = require("../controllers/controller_cat");
 const assetControl = require("../controllers/controller_asset");
 const assignControl = require("../controllers/controller_assign");
+const middleware = require("../middleware/auth");
 const token = require("../events/token_manager");
 const { json } = require("body-parser");
 const router = express.Router();
@@ -14,15 +15,6 @@ router.get("/", (req, res) => {
 });
 router.get("/user", userControl.control_getAllUser);
 router.get("/user/:id", userControl.control_getByUser);
-router.post("/user/login", userControl.control_login);
-router.post("/checktoken", (req, res) => {
-  let jwtStatus = token.token_manager.checkAuthToken(req);
-  if (jwtStatus) {
-    res.send(jwtStatus);
-  } else {
-    res.send("Token error.");
-  }
-});
 // GET
 router.get("/prodtype", catControl.control_prodtype);
 router.get("/owner", catControl.control_owner);
@@ -35,6 +27,16 @@ router.get("/v1/getassetusersw/:username", assetControl.control_assetusersw);
 router.get("/v1/getassetuserhw/:username", assetControl.control_assetuserhw);
 // POST
 router.post("/v1/addasset", assetControl.control_insertasset);
+router.post("/user/login", userControl.control_login);
+router.post("/user/refresh",userControl.jwtRefreshTokenValidate, userControl.control_refreshtoken);
+router.post("/checktoken", (req, res) => {
+  let jwtStatus = token.token_manager.checkAuthToken(req);
+  if (jwtStatus) {
+    res.send(jwtStatus);
+  } else {
+    res.send("Token error.");
+  }
+});
 // PUT --
 router.put("/v1/updateasset", assetControl.control_updateasset);
 router.put("/v1/addassignasset",assignControl.control_insertassign);
