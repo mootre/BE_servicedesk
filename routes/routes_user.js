@@ -7,6 +7,7 @@ const assignControl = require("../controllers/controller_assign");
 const middleware = require("../middleware/auth");
 const token = require("../events/token_manager");
 const { json } = require("body-parser");
+const cookieParser = require('cookie-parser');
 const router = express.Router();
 router.use(cors());
 

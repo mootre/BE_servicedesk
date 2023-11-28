@@ -1,6 +1,8 @@
 const { token_manager } = require("../events/token_manager");
 const eventsData = require("../events/users");
 require("../middleware/auth").jwtRefreshTokenValidate;
+const cookieParser = require('cookie-parser');
+
 const jwt = require("jsonwebtoken");
 const jwtGenerate = (user) => {
   const accessToken = jwt.sign(
@@ -55,7 +57,7 @@ const control_getByUser = async (req, res, next) => {
     if (event[0] == null) {
       return res.status(401).send("not found!.");
     } else {
-      res.status(200).send(event);
+      res.status(200).send({"status":200,"result":event[0]});
     }
   } catch (error) {
     res.status(401).send(error.message);
@@ -70,7 +72,8 @@ const control_login = async (req, res) => {
     } else {
       const access_token = jwtGenerate(incorrect[0]);
       const refresh_token = jwtRefreshTokenGenerate(incorrect[0]);
-      res.status(200).json({ access_token, refresh_token });
+      res.status(200).json({"status":200,"user":{"name":incorrect[0].username,"accesstoken":access_token,"refreshtoken": refresh_token} });
+
 
       /*//const token = jwt.sign({userid:eventId},process.env.TOKEN_KEY,{expiresIn: '1h'});
       //res.status(200).json({event,token:token})
@@ -86,7 +89,7 @@ const control_login = async (req, res) => {
       //res.status(200).json(incorrect)*/
     }
   } catch (err) {
-    res.status(400).send(error.message);
+    res.status(400).send(err.message);
   }
 };
 const control_refreshtoken = async (req, res) => {
