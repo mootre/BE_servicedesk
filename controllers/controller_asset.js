@@ -68,6 +68,7 @@ const control_insertasset = async (req, res) => {
       sdate,
       edate,
       description,
+      insertby,
     } = req.body;
     const result = await eventsData.insertAsset(
       name,
@@ -89,7 +90,8 @@ const control_insertasset = async (req, res) => {
       qty,
       sdate,
       edate,
-      description
+      description,
+      insertby,
     );
     if (result !== null) {
       res
@@ -127,6 +129,7 @@ const control_updateasset = async (req, res) => {
       sdate,
       edate,
       description,
+      insertby,
     } = req.body;
     const result = await eventsData.updateAsset(
       name,
@@ -148,7 +151,8 @@ const control_updateasset = async (req, res) => {
       qty,
       sdate,
       edate,
-      description
+      description,
+      insertby,
     );
     if (result !== null) {
       res

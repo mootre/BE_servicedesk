@@ -138,13 +138,14 @@ const insertAsset = async (
   qty,
   sdate,
   edate,
-  description
+  description,
+  insertby,
 ) => {
   try {
     let pool = await sql.connect(config.sql);
     const query = `exec svdAssetitemmaster 
         @ItemName, @AssetIT, @AssetACC, @Invno, @Invdate, @AssetType, @AssetStatus, @Serial, @SerialNo,
-        @Model, @Manufactor, @Supplier, @Category, @Edition, @Version, @Installation, @Qty, @Description, @Entrydate, @Expirydate
+        @Model, @Manufactor, @Supplier, @Category, @Edition, @Version, @Installation, @Qty, @Description, @Entrydate, @Expirydate, @insertby
       `;
     const request = pool
       .request()
@@ -167,7 +168,8 @@ const insertAsset = async (
       .input("Qty", sql.Int, qty)
       .input("Description", sql.VarChar(100), description)
       .input("Entrydate", sql.Date, sdate)
-      .input("Expirydate", sql.Date, edate);
+      .input("Expirydate", sql.Date, edate)
+      .input("insertby", sql.VarChar(20), insertby);
     const rs = await request.query(query);
     if (rs) {
       return rs.recordset;
@@ -200,13 +202,14 @@ const updateAsset = async (
   qty,
   sdate,
   edate,
-  description
+  description,
+  insertby,
 ) => {
   try {
     let pool = await sql.connect(config.sql);
     const query = `exec svdUpdateAssetitemmaster 
         @ItemName, @AssetIT, @AssetACC, @Invno, @Invdate, @AssetType, @AssetStatus, @Serial, @SerialNo,
-        @Model, @Manufactor, @Supplier, @Category, @Edition, @Version, @Installation, @Qty, @Description, @Entrydate, @Expirydate
+        @Model, @Manufactor, @Supplier, @Category, @Edition, @Version, @Installation, @Qty, @Description, @Entrydate, @Expirydate, @insertby
       `;
     const request = pool
       .request()
@@ -229,7 +232,8 @@ const updateAsset = async (
       .input("Qty", sql.Int, qty)
       .input("Description", sql.VarChar(100), description)
       .input("Entrydate", sql.Date, sdate)
-      .input("Expirydate", sql.Date, edate);
+      .input("Expirydate", sql.Date, edate)
+      .input("insertby", sql.VarChar(20), insertby);
     const rs = await request.query(query);
     if (rs) {
       return rs.recordset;
