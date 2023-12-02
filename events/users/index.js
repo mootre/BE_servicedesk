@@ -18,7 +18,7 @@ const getByUser = async(id)=>{
         let pool = await sql.connect(config.sql);
         const rs = await pool.request()
                     .input('username',sql.VarChar(15),id)
-                    .query("select username ,firstname+' '+lastname fullname,auth from muser where username=@username");
+                    .query("select username ,firstname+' '+lastname fullname,auth,department dep from muser where username=@username");
         if(rs){return rs.recordset;}
         else{return null;}
     }catch(error){

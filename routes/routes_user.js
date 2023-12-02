@@ -23,6 +23,7 @@ router.get("/v1/listasset", assetControl.control_listasset);
 router.get("/v1/listassetassign", assetControl.control_listassetassign);
 router.get("/v1/listcomponent", assetControl.control_component);
 router.get("/v1/getasset/:id", assetControl.control_assetbyid);
+router.get("/v1/gettimeline/:id", assetControl.control_assettimelinebyid);
 router.get("/v1/getcomponent/:id", assetControl.control_componentbyid);
 router.get("/v1/getassetusersw/:username", assetControl.control_assetusersw);
 router.get("/v1/getassetuserhw/:username", assetControl.control_assetuserhw);

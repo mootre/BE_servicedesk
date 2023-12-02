@@ -65,7 +65,21 @@ const getAssetbyid = async (ItemID) => {
     throw error;
   }
 };
-
+const getAssetTimelinebyid = async (ItemID) => {
+  try {
+    let pool = await sql.connect(config.sql);
+    const rs = await pool
+      .request()
+      .input("ItemID", sql.Int, ItemID)
+      .query("exec svdAssetTimeline @ItemID");
+    if (rs.recordset.length===0) {
+      return { success: false, message: 'No records found.' };
+    }
+    return {success: true,data:rs.recordset};
+  } catch (error) {
+    throw error;
+  }
+};
 const getComponentbyid = async (ItemID) => {
   try {
     let pool = await sql.connect(config.sql);
@@ -275,5 +289,6 @@ module.exports = {
   getAllComponent,
   getAllAssetAssign,
   updateAssigned,
-  getComponentbyid
+  getComponentbyid,
+  getAssetTimelinebyid
 };

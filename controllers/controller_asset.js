@@ -36,6 +36,18 @@ const control_assetbyid = async (req, res) => {
     res.status(404).send(error.message);
   }
 };
+const control_assettimelinebyid = async (req, res) => {
+  try {
+    const ItemID = req.params.id;
+    const result = await eventsData.getAssetTimelinebyid(ItemID);
+    if (result.success) {
+      return res.status(200).json({ status: 200, result });
+    }
+    return res.status(400).json({ status: 400, result });
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+};
 const control_componentbyid = async (req, res) => {
   try {
     const ItemID = req.params.id;
@@ -213,5 +225,6 @@ module.exports = {
   control_component,
   control_listassetassign,
   control_updateassigned,
-  control_componentbyid
+  control_componentbyid,
+  control_assettimelinebyid
 };
