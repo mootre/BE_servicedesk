@@ -34,10 +34,23 @@ const getAllAssetAssign = async () => {
   try {
     let pool = await sql.connect(config.sql);
     const rs = await pool.request().query(`
-      select ItemID,ItemName,AssetIT,AssetACC,Serial,SerialNo,Description,AssetStatus,AssetType 
-      from mAsset 
-      where not exists (select itemid from tAssignAsset where itemid=mAsset.itemid and active<>0)  
-      and not exists (select itemcomponent from tAssetComponent where ItemComponent=mAsset.ItemID and Active<>0) `);
+    select ItemID,ItemName,AssetIT,AssetACC,Serial,SerialNo,Description,AssetStatus,AssetType 
+    from mAsset 
+    where 
+    not exists (
+      select itemid 
+      from tAssignAsset
+      inner join (select max(id)id,itemid item from tAssignAsset group by Itemid) t1 
+      on tAssignAsset.ID=t1.id
+      where itemid=mAsset.itemid and active<>0
+    )  
+    and not exists (
+      select itemcomponent 
+      from tAssetComponent
+      inner join (select max([Row])id,itemid item from tAssetComponent group by Itemid) t1 
+      on tAssetComponent.[Row]=t1.id
+      where ItemComponent=mAsset.ItemID and Active<>0
+      ) `);
     if (rs) {
       return rs.recordset;
     }
@@ -90,6 +103,8 @@ const getComponentbyid = async (ItemID) => {
       select mAsset.ItemID,ItemName,AssetIT,AssetACC,AssetType,AssetStatus,Serial,SerialNo,Model,Manufactor,Supplier,Category,Edition,Version,Installation,Qty,Description,mAsset.Entrydate,Expirydate 
       from tAssetComponent 
       left join mAsset on mAsset.ItemID=tAssetComponent.ItemComponent 
+      inner join (select max([Row])id,itemid item from tAssetComponent group by Itemid) t1 
+	    on tAssetComponent.[Row]=t1.id
       where tAssetComponent.ItemID=@ItemID and tAssetComponent.active=1`);
     if (rs.recordset.length===0) {
       return { success: false, message: 'No records found.' };
