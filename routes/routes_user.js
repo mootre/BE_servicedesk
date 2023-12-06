@@ -46,6 +46,6 @@ router.put("/v1/addassigncomponent",assignControl.control_insertcomponent);
 router.put("/v1/deleteassignasset",assignControl.control_deleteassign);
 router.put("/v1/deletecomponent",assignControl.control_deletecomponent);
 router.put("/v1/updateassign", assetControl.control_updateassigned);
-
+router.put("/v1/updateassetacc", assetControl.control_updateassetacc);
 
 module.exports = router;

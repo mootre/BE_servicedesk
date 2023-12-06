@@ -2,7 +2,7 @@ version: '3.9'
 services:
   web:
     container_name: besvd_container
-    restatrt: always
+    restart: always
     build: 
       context: .
       dockerfile: Dockerfile

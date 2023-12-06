@@ -199,8 +199,33 @@ const control_assetusersw = async (req, res) => {
 };
 const control_updateassigned = async (req, res) => {
   try {
-    const { itemid } = req.body;
-    const result = await eventsData.updateAssigned(itemid);
+    const { itemid,assignby } = req.body;
+    const result = await eventsData.updateAssigned(itemid,assignby);
+    if (result !== null) {
+      res
+        .status(200)
+        .json({ status: 200, message: "Asset updated successfully." });
+    } else {
+      res
+        .status(401)
+        .json({ status: 401, message: "Unable to update asset item." });
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+const control_updateassetacc = async (req, res) => {
+  try {
+    const {
+      itemid,
+      assetacc,
+      insertby,
+    } = req.body;
+    const result = await eventsData.updateAssetAcc(
+      itemid,
+      assetacc,
+      insertby,
+    );
     if (result !== null) {
       res
         .status(200)
@@ -226,5 +251,6 @@ module.exports = {
   control_listassetassign,
   control_updateassigned,
   control_componentbyid,
-  control_assettimelinebyid
+  control_assettimelinebyid,
+  control_updateassetacc
 };

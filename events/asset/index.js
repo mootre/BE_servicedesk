@@ -259,14 +259,38 @@ const updateAsset = async (
     throw error;
   }
 };
-
-const updateAssigned = async (itemid) => {
+const updateAssetAcc = async (
+  itemid,
+  assetacc,
+  insertby,
+) => {
   try {
     let pool = await sql.connect(config.sql);
-    const query = `update tAssignAsset set active=0 where itemid=@itemid `;
+    const query = `exec svdUpdateAssetAcc @ItemId, @AssetACC, @insertby`;
     const request = pool
       .request()
-      .input("itemid", sql.Int, itemid);
+      .input("ItemId", sql.Int, itemid)
+      .input("AssetACC", sql.VarChar(50), assetacc)
+      .input("insertby", sql.VarChar(20), insertby);
+    const rs = await request.query(query);
+    if (rs) {
+      return rs.recordset;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+const updateAssigned = async (itemid,assignby) => {
+  try {
+    let pool = await sql.connect(config.sql);
+    const query = `exec svdUpdateAssignAsset @itemid,@assignby `;
+    const request = pool
+      .request()
+      .input("itemid", sql.Int, itemid)
+      .input("assignby", sql.VarChar(50),assignby);
     const rs = await request.query(query);
     if (rs) {
       return rs.recordset;
@@ -290,5 +314,6 @@ module.exports = {
   getAllAssetAssign,
   updateAssigned,
   getComponentbyid,
-  getAssetTimelinebyid
+  getAssetTimelinebyid,
+  updateAssetAcc
 };
