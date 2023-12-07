@@ -80,16 +80,18 @@ const assignAsset = async (
   const deletecomponent = async (
     username,
     parent,
-    child
+    child,
+    assignby
   ) => {
     try {
       let pool = await sql.connect(config.sql);
-      const query = `exec svdDeleteComponent @username, @parent, @child`;
+      const query = `exec svdDeleteComponent @username, @parent, @child, @assignby`;
       const request = pool
         .request()
         .input("username", sql.VarChar(50), username)
         .input("parent", sql.Int, parent)
         .input("child", sql.Int, child)
+        .input("assignby",sql.VarChar(20),assignby)
       const rs = await request.query(query);
       if (rs) {
         return rs.recordset;

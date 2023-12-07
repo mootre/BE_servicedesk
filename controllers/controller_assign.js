@@ -79,12 +79,14 @@ const control_insertassign = async (req, res) => {
       const {
         username,
         parentid,
-        childid
+        childid,
+        assignby
       } = req.body;
       const result = await eventsData.deletecomponent(
         username,
         parentid,
-        childid
+        childid,
+        assignby
       );
       if (result !== null) {
         res
