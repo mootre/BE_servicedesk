@@ -20,7 +20,10 @@ const getAllComponent = async () => {
     const rs = await pool.request().query(`
       select ItemID,ItemName,AssetIT,AssetACC,Serial,SerialNo,Description,AssetStatus,AssetType 
       from mAsset 
-      where not exists (select itemcomponent from tAssetComponent where itemcomponent=mAsset.ItemID and active<>0) and AssetType='Part' `);
+      where not exists (	select itemcomponent from tAssetComponent t1
+        inner join (select max([row]) [row],Itemid item from tAssetComponent group by Itemid) t2
+        on t1.[row]=t2.[row]
+        where itemcomponent=mAsset.ItemID and active<>0) and AssetType='Part' `);
     if (rs) {
       return rs.recordset;
     }
