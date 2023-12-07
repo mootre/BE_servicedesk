@@ -106,8 +106,8 @@ const getComponentbyid = async (ItemID) => {
       select mAsset.ItemID,ItemName,AssetIT,AssetACC,AssetType,AssetStatus,Serial,SerialNo,Model,Manufactor,Supplier,Category,Edition,Version,Installation,Qty,Description,mAsset.Entrydate,Expirydate 
       from tAssetComponent 
       left join mAsset on mAsset.ItemID=tAssetComponent.ItemComponent 
-      inner join (select max([Row])id,itemid item from tAssetComponent group by Itemid) t1 
-	    on tAssetComponent.[Row]=t1.id
+      inner join (select max([Row])id,ItemComponent item from tAssetComponent group by ItemComponent) t1 
+      on tAssetComponent.[Row]=t1.id
       where tAssetComponent.ItemID=@ItemID and tAssetComponent.active=1`);
     if (rs.recordset.length===0) {
       return { success: false, message: 'No records found.' };
